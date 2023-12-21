@@ -11,7 +11,12 @@ const CreateFilm = observer(({ show, onHide }) => {
     const [file, setFile] = useState(null);
     const [info, setInfo] = useState([]);
 
-    // ... (useEffect for fetching genres and moviemakers)
+    const [errorBudget, setErrorBudget] = useState('');
+
+    useEffect(() => {
+        fetchGenres().then(data => film.setGenres(data));
+        fetchMoviemaker().then(data => film.setMoviemakers(data));
+    }, []);
 
     const addInfo = () => {
         setInfo([...info, { title: '', description: '', number: Date.now() }]);
@@ -55,6 +60,17 @@ const CreateFilm = observer(({ show, onHide }) => {
             createFilm(formData).then(() => onHide());
         }
     }
+
+    const handleBudgetChange = (e) => {
+        const value = Number(e.target.value);
+        if (!isNaN(value) && value >= 0) {
+            setBudget(value);
+            setErrorBudget('');
+        } else {
+            setBudget(0);
+            setErrorBudget('Бюджет не может быть отрицательным.');
+        }
+    };
 
     return (
         <Modal
@@ -102,15 +118,16 @@ const CreateFilm = observer(({ show, onHide }) => {
                     />
                     <Form.Control
                         value={budget}
-                        onChange={e => setBudget(Number(e.target.value))}
+                        onChange={handleBudgetChange}
                         className="mt-3"
                         placeholder="Введите бюджет фильма..."
                         type="number"
+                        min="0"
                     />
                     <Form.Control
                         className="mt-3"
                         type="file"
-                        accept=".jpg"
+                        accept=".jpg, .jpeg, .png"
                         onChange={selectFile}
                     />
                 </Form>
