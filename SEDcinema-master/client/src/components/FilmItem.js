@@ -15,7 +15,7 @@ const FilmItem = ({film}) => {
                 style={{width: 200,cursor: "pointer", height:"250px"}}
                 border={"Light"}
             >
-                <Image style={{width: "100%", border: "orange", borderWidth: "3px"}} src={process.env.REACT_APP_API_URL + film.img}/>
+                <Image style={{width: "100%",height: "80%", border: "orange", borderWidth: "3px"}} src={process.env.REACT_APP_API_URL + film.img}/>
                 <div className="d-flex justify-content-between align-items-center mt-2">
                     <div className="text-black-50">{film && film?.moviemaker?.name || "Не указан"}</div>
                 </div>

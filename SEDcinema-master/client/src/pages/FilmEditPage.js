@@ -208,11 +208,18 @@ const FilmEditPage = observer(() => {
                             <Form.Control
                                 type="number"
                                 value={budget}
-                                onChange={e => setBudget(Number(e.target.value))}
+                                min="0"
+                                onChange={e => {
+                                    const inputValue = Number(e.target.value);
+                                    if (inputValue >= 0) {
+                                        setBudget(inputValue);
+                                    }
+                                }}
                             />
                         </Col>
                         <Col xs={3} className="d-flex align-items-center">
                             {budget === 0 && <b style={{color: "red"}}>Пожалуйста введите новый бюджет фильма</b>}
+                            {budget < 0 && <b style={{color: "red"}}>Не вводите отрицательное пожалуйста!!!</b>}
                         </Col>
                     </Row>
 
