@@ -9,6 +9,10 @@ class FilmController {
         try {
             let {name, budget, moviemakerId, genreId, info} = req.body;
             const {img} = req.files;
+
+            //Проверка на неотрицательность бюджета
+            budget = Math.max(0, budget);
+
             let fileName = uuid.v4() + ".jpg";
             img.mv(path.resolve(__dirname, '..', 'static', fileName));
             const film = await Film.create({
@@ -201,6 +205,9 @@ class FilmController {
             const {id} = req.params;
             const {moviemakerId, genreId, name, budget, info} = req.body;
 
+            //проверка на неотрицательность
+            const updatedBudget = Math.max(0, budget);
+
             await Film.findOne({where:{id}})
                 .then( async data => {
                     if(data) {
@@ -208,7 +215,7 @@ class FilmController {
                         moviemakerId ? newVal.moviemakerId = moviemakerId : false;
                         genreId ? newVal.genreId = genreId : false;
                         name ? newVal.name = name : false;
-                        budget ? newVal.budget = budget : false;
+                        newVal.budget = updatedBudget; //использована проверенная на неотрицательность переменная
 
                         if(req.files) {
                             const {img} = req.files;

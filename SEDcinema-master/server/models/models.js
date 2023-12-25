@@ -18,10 +18,20 @@ const WatchlistFilm = sequelize.define('watchlist_film', {
 });
 
 const Film = sequelize.define('film', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
-    budget: {type: DataTypes.INTEGER, allowNull: false},
-    img: {type: DataTypes.STRING, allowNull: false},
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, unique: true, allowNull: false },
+    budget: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            isNonNegative(value) {
+                if (value < 0) {
+                    throw new Error('Budget must be non-negative.');
+                }
+            },
+        },
+    },
+    img: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Genre = sequelize.define('genre', {
